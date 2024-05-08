@@ -4,7 +4,7 @@
 Post::Post()
 {
 }
-Post::Post(char* postText, Object* shared_By)
+Post::Post(string postText, Object* shared_By)
 {
 	SharedBy = shared_By;
 	Text = postText;
@@ -47,14 +47,14 @@ Activity* Post::getActivity()
 {
 	return activity;
 }
-char* Post::getPostId()
+string Post::getPostId()
 {
 	return ID;
 }
 void Post::ReadDataFromFile(ifstream& fin)
 {
-	char id[10];
-	char text[150];
+	string id[10];
+	string text[150];
 	int activityCheck;
 	fin >> activityCheck;
 	fin >> id;

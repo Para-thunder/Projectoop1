@@ -53,23 +53,32 @@ string Post::getPostId()
 }
 void Post::ReadDataFromFile(ifstream& fin)
 {
-	string id[10];
-	string text[150];
+	string id;
+	string text;
 	int activityCheck;
+
 	fin >> activityCheck;
-	fin >> id;
-	ID = Helper::GetStringFromBuffer(id);
+	fin.ignore();
+	getline(fin, id); 
+	ID = id;
+
 	SharedDate.ReadDataFromFile(fin);
-	fin.getline(text, 150);
-	if (text[0] == '\t' || text[0] == '\0') {
-		fin.getline(text, 150);
+
+	getline(fin, text); 
+	if (!text.empty() && text[0] == '\t') {
+		
+		string continuation;
+		getline(fin, continuation);
+		text += continuation;
 	}
-	Text = Helper::GetStringFromBuffer(text);
+	Text = text;
+
 	if (activityCheck == 2) {
 		activity = new Activity;
 		activity->ReadDataFromFile(fin);
 	}
 }
+
 void Post::viewPost(bool dateFlag, bool commentFlag)
 {
 	SharedBy->printName();

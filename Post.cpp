@@ -1,164 +1,179 @@
 #include"Post.h"
 
-
+Post::~Post()
+{
+	delete[] Id;
+	delete[] text;
+	if (LikedBy != 0)
+		delete[] LikedBy;
+	if (comments != 0)
+		delete[] comments;
+	if (activity != 0)
+		delete activity;
+}
 Post::Post()
 {
+	Id = 0;
+	text = 0;
+	sharedBy = 0;
+	LikedBy = 0;
+	comments = 0;
+	activity = 0;
+	totalComment = 0;
+	totalLikedBy = 0;
 }
-Post::Post(string postText, Object* shared_By)
+Post::Post(const char* txt, Object* SharedBy, Date currentDate)
 {
-	SharedBy = shared_By;
-	Text = postText;
-	SharedDate = Date::CurrentDate;
-}
-void Post::viewlikes()
-{
-	for (int i = 0; i < LikesCount; i++) {
-		cout << LikedBy[i]->getId() << " - ";
-		LikedBy[i]->printName();
-		cout << endl;
-	}
-}
-bool Post::dateCheck()
-{
-	if (SharedDate <= Date::CurrentDate) {
-		return true;
-	}
-	else {
-		return false;
-	}
-}
-Comment** Post::getComments()
-{
-	return comments;
-}
-int Post::getCommentsCount()
-{
-	return commentsCount;
-}
-char* Post::getPostText()
-{
-	return Text;
-}
-Date Post::getSharedDate()
-{
-	return SharedDate;
-}
-Activity* Post::getActivity()
-{
-	return activity;
-}
-string Post::getPostId()
-{
-	return ID;
-}
-void Post::ReadDataFromFile(ifstream& fin)
-{
-	string id;
-	string text;
-	int activityCheck;
 
-	fin >> activityCheck;
-	fin.ignore();
-	getline(fin, id); 
-	ID = id;
+	activity = 0;
+	char* IdForNewPost = Helper::ConcateIntAndString("post", TotalPosts + 1);
 
-	SharedDate.ReadDataFromFile(fin);
-
-	getline(fin, text); 
-	if (!text.empty() && text[0] == '\t') {
-		
-		string continuation;
-		getline(fin, continuation);
-		text += continuation;
-	}
-	Text = text;
-
-	if (activityCheck == 2) {
-		activity = new Activity;
-		activity->ReadDataFromFile(fin);
-	}
+	Helper::GetStringFromBuffer(IdForNewPost, Id);
+	Helper::GetStringFromBuffer(txt, text);
+	sharedBy = SharedBy;
+	sharedDate = currentDate;
+	totalComment = 0;
+	totalLikedBy = 0;
 }
 
-void Post::viewPost(bool dateFlag, bool commentFlag)
+
+void  Post::SetSharedBy(Object* ptr)
 {
-	SharedBy->printName();
-	if (activity) {
-		activity->activityPrint();
-	}
-	else {
-		cout << " shared ";
-	}
-	cout << Text;
-	if (dateFlag == 1) {
-		SharedDate.printDate();
-	}
-	else {
-		cout << endl;
-	}
-	if (commentFlag == 1) {
-		for (int i = 0; i < commentsCount; i++) {
-			cout << "\t\t";
-			comments[i]->viewCommentBy();
-			comments[i]->viewCommentText();
-		}
-	}
-}
-void Post::AddComment(Comment* ptr)
-{
-	if (!comments) {
-		//	comments = new Comment * [10];
-	}
-	//comments[commentsCount] = ptr;
-	if (ptr != 0) {
-		//commentsCount++;
-	}
-}
-void Post::SetSharedBy(Object* ptr)
-{
-	SharedBy = ptr;
+	sharedBy = ptr;
 }
 void Post::SetLikedBy(Object* ptr)
 {
-	if (!LikedBy) {
+	if (totalLikedBy == 0)
+	{
 		LikedBy = new Object * [10];
+		for (int i = 0; i < 10; i++)
+		{
+			LikedBy[i] = 0;
+		}
+		LikedBy[totalLikedBy] = ptr;
+		totalLikedBy++;
 	}
-	LikedBy[LikesCount] = ptr;
-	if (ptr != 0) {
-		LikesCount++;
+	else
+	{
+		LikedBy[totalLikedBy] = ptr;
+		totalLikedBy++;
 	}
 }
-void Post::dateDifference()
+
+void  Post::AddComment(Comment* ptr)
 {
-	if (SharedDate.memoryDateCheck() == 1) {
-		cout << Date::CurrentDate.getDateYear() - SharedDate.getDateYear() << " Years Ago" << endl;
-		viewPost(1, 0);
+
+	if (totalComment == 0)
+	{
+		comments = new Comment * [10];
+		for (int i = 0; i < 10; i++)
+		{
+			comments[i] = nullptr;
+		}
+		comments[totalComment] = ptr;
+		totalComment++;
+	}
+
+	else
+	{
+		comments[totalComment] = ptr;
+		totalComment++;
 	}
 }
-Post::~Post()
+
+bool  Post::CompareDate(Date currentDate, bool isMemory)
 {
-	if (ID) {
-		delete[] ID;
+	if (currentDate.compare(sharedDate, isMemory))
+	{
+		return true;
 	}
-	if (Text) {
-		delete[] Text;
+	else
+		return false;
+}
+
+Date  Post::GetSharedDate()
+{
+	return sharedDate;
+}
+
+char* Post::GetId()
+{
+	return Id;
+}
+
+int Post::TotalPosts = 0;
+
+
+void Post::ReadDataFromFile(ifstream& inp)
+{
+	int activityId = 0;
+	inp >> activityId;
+	char temp[100];
+	inp >> temp;
+	Helper::GetStringFromBuffer(temp, Id);
+	sharedDate.ReadDataFromFile(inp);
+	inp.ignore();
+	inp.getline(temp, 100, '\n');
+	Helper::GetStringFromBuffer(temp, text);
+	if (activityId == 2)
+	{
+		activity = new Activity;
+		activity->ReadDataFromFile(inp);
 	}
-	SharedBy = nullptr;
-	if (activity) {
-		delete activity;
+	TotalPosts++;
+
+
+}
+void Post::Print(bool& flag)
+{
+
+	sharedBy->PrintForHome();
+	cout << " ";
+	if (activity != 0)
+	{
+		activity->Print();
 	}
-	if (LikedBy) {
-		for (int i = 0; i < LikesCount; i++) {
-			if (LikedBy[i])
-				LikedBy[i] = nullptr;
+	cout << endl;
+	cout << "\"" << text << "\"";
+	cout << " (";
+	sharedDate.Print();
+	cout << ") " << endl << "\t";
+	for (int i = 0; i < totalComment; i++)
+	{
+		comments[i]->Print();
+		cout << "\t";
+	}
+	cout << endl;
+
+}
+void Post::Print()
+{
+	sharedBy->PrintForHome();
+	cout << " ";
+	if (activity != 0)
+	{
+		activity->Print();
+	}
+	cout << endl;
+	cout << "\"" << text << "\"";
+	cout << " (";
+	cout << ") " << endl << "\t";
+	for (int i = 0; i < totalComment; i++)
+	{
+		comments[i]->Print();
+		cout << "\t";
+	}
+	cout << endl;
+}
+void Post::ViewLikedList()
+{
+	if (LikedBy != 0)
+	{
+		cout << "-----------------------------------------------------------------------------------------" << endl;
+		for (int i = 0; i < totalLikedBy; i++)
+		{
+			LikedBy[i]->Print();
+			cout << endl;
 		}
-		delete[] LikedBy;
-	}
-	if (comments) {
-		for (int i = 0; i < commentsCount; i++) {
-			if (comments[i]) {
-				delete comments[i];
-			}
-		}
-		delete[] comments;
 	}
 }

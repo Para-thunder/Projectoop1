@@ -3,11 +3,11 @@
 
 Users::Users()
 {
-    Fname = "";
-    Lname = "";
-    LikedPages = 0;
-    FriendList = 0;
-    timeline = 0;
+    Fname = 0;
+    Lname = 0;
+    LikedPages = nullptr;
+    FriendList = nullptr;
+    timeline = nullptr;
     totalTimeline = 0;
     numPages = 0;
     numFriends = 0;
@@ -15,6 +15,8 @@ Users::Users()
 }
 Users::~Users()
 {
+    delete[] Fname;
+    delete[] Lname;
     if (LikedPages != 0)
     {
         delete[] LikedPages;
@@ -28,17 +30,20 @@ Users::~Users()
         delete[] timeline;
     }
 }
-void Users::ReadDataFromFile(std::ifstream& inp) {
-    std::string temp;
-    inp >> temp;
-    SetID(temp);
 
-    inp >> temp;
-    Fname = temp;
+    void Users::ReadDataFromFile(ifstream & inp)
+    {
+        char temp[50];
+        inp >> temp;
+        char* ptr;
+        Helper::GetStringFromBuffer(temp, ptr);
+        SetID(ptr);
+        inp >> temp;
+        Helper::GetString(temp, Fname);
+        inp >> temp;
+        Helper::GetString(temp, Lname);
+    }
 
-    inp >> temp;
-    Lname = temp;
-}
 void Users::SetPage(Page* ptr)
 {
     if (numPages == 0)

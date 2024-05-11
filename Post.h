@@ -10,8 +10,8 @@
 
 class Post : public Object
 {
-	string ID;
-	string Text;
+	char* ID;
+	char* Text;
 	Date sharedDate;
 	Activity* activity;
 	Object* sharedBy;
@@ -20,24 +20,22 @@ class Post : public Object
 
 	int totalLikedBy;
 	int totalComment;
+
+	static int TotalPosts;
 public:
-	Post();
-	Post(char*, Object*);
-	void SetSharedBy(Object*);
-	void SetLikedBy(Object*);
-	void ReadDataFromFile(ifstream&);
-	void AddComment(Comment*);
-	Comment** getComments();
-	int getCommentsCount();
-	char* getPostText();
-	Date getSharedDate();
-	char* getPostId();
-	bool dateCheck();
-	Activity* getActivity();
-	void viewPost(bool, bool);
-	void viewlikes();
-	void dateDifference();
 	~Post();
+	Post(const char* txt, Object* SharedBy, Date currentDate);
+	Post();
+	void ReadDataFromFile(ifstream& inp);
+	void SetSharedBy(Object* ptr);
+	void SetLikedBy(Object* ptr);
+	void AddComment(Comment* ptr);
+	bool CompareDate(Date currentDate, bool isMemory);
+	void ViewLikedList();
+	virtual void Print(bool& flag);
+	void Print();
+	Date GetSharedDate();
+	char* GetId();
 };
 
 #endif;

@@ -13,8 +13,8 @@ using namespace std;
 
 class Users : public Object {
 
-    string Fname;
-    string Lname;
+    char* Fname;
+    char* Lname;
     Pages** LikedPages;
     Users** FriendList;
     Post** timeline;

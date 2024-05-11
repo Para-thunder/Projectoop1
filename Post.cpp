@@ -26,10 +26,10 @@ Post::Post(const char* txt, Object* SharedBy, Date currentDate)
 {
 
 	activity = 0;
-	char* IdForNewPost = Helper::ConcateIntAndString("post", TotalPosts + 1);
+	char* IdForNewPost = Helper::Concate("post", TotalPosts + 1);
 
-	Helper::GetStringFromBuffer(IdForNewPost, Id);
-	Helper::GetStringFromBuffer(txt, text);
+	Helper::GetString(IdForNewPost, Id);
+	Helper::GetString(txt, text);
 	sharedBy = SharedBy;
 	sharedDate = currentDate;
 	totalComment = 0;
@@ -110,7 +110,7 @@ void Post::ReadDataFromFile(ifstream& inp)
 	inp >> activityId;
 	char temp[100];
 	inp >> temp;
-	Helper::GetStringFromBuffer(temp, Id);
+	Helper::GetString(temp, Id);
 	sharedDate.ReadDataFromFile(inp);
 	inp.ignore();
 	inp.getline(temp, 100, '\n');

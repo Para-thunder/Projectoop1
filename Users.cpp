@@ -36,7 +36,7 @@ Users::~Users()
         char temp[50];
         inp >> temp;
         char* ptr;
-        Helper::GetStringFromBuffer(temp, ptr);
+        Helper::GetString(temp, ptr);
         SetID(ptr);
         inp >> temp;
         Helper::GetString(temp, Fname);

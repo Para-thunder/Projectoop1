@@ -1,8 +1,8 @@
 #include"Comment.h"
 
-Comment::Comment(Object* CurrentUser, char* txt)
+Comment::Comment(Control* CurrentUser, char* txt)
 {
-	char* IdForNewComment = Helper::ConcateIntAndString("c", TotalComments + 1);
+	char* IdForNewComment = Manager::concate("c", TotalComments + 1);
 	Text = txt;
 	CommentBy = CurrentUser;
 	Id = IdForNewComment;
@@ -21,11 +21,11 @@ Comment::~Comment()
 	delete[]Id;
 }
 
-void Comment::SetValues(char* idStr, char* textStr, Object* commentByPtr)
+void Comment::SetValues(char* idStr, char* textStr, Control* commentByPtr)
 {
 	CommentBy = commentByPtr;
-	Helper::GetStringFromBuffer(textStr, Text);
-	Helper::GetStringFromBuffer(idStr, Id);
+	Manager::GetString(textStr, Text);
+	Manager::GetString(idStr, Id);
 	TotalComments++;
 }
 

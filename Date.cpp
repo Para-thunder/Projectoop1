@@ -1,6 +1,8 @@
 #include"Date.h"
 
 
+Date::Date() : day(0), month(0), year(0) {}
+
 Date::Date(int x = 0, int y = 0, int z = 0)
 {
 	day = x;
@@ -8,14 +10,17 @@ Date::Date(int x = 0, int y = 0, int z = 0)
 	year = z;
 }
 
-void Date::ReadDataFromFile(ifstream& inp)
+void Date::ReadDataFromFile(std::ifstream& inp)
 {
 	inp >> day;
 	inp >> month;
 	inp >> year;
 }
 
-bool Date::compare(const Date& rhs, bool isMemory)
+
+
+
+bool Date::compare(const Date& rhs, bool isMemory)const
 {
 	if (isMemory == false)
 	{
@@ -67,7 +72,7 @@ bool Date::compare(const Date& rhs, bool isMemory)
 	}
 }
 
-static int Date::YearDiff(Date lhs, Date rhs)
+int Date::YearDiff(const Date lhs, const Date rhs)
 {
 	int ans;
 	ans = lhs.year - rhs.year;
@@ -78,9 +83,9 @@ static int Date::YearDiff(Date lhs, Date rhs)
 	return ans;
 }
 
-void Date::Print()
+void Date::Print()const
 {
-	cout << day << "/" << month << "/" << year;
+	std::cout << day << "/" << month << "/" << year;
 }
 
 void Date::SetData(int d, int m, int y)
@@ -89,3 +94,4 @@ void Date::SetData(int d, int m, int y)
 	month = m;
 	year = y;
 }
+Date Date::CurrentDate = Date(0, 0, 0);

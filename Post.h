@@ -2,33 +2,38 @@
 #ifndef POST_H
 #define POST_H
 
-#include"User.h"
-#include"Activity.h"
-#include"Comment.h"
 #include"Date.h"
-#include"Memory.h"
+#include"Control.h"
+#include"Comment.h"
+#include"Activity.h"
+#include<iostream>
+#include"Manager.h"
+#include<fstream>
 
-class Post : public Object
+//using namespace std;
+
+class Post
 {
-	char* ID;
-	char* Text;
+	char* Id;
+	char* text;
 	Date sharedDate;
-	Activity* activity;
-	Object* sharedBy;
-	Object** LikedBy;
+	Control* sharedBy;
+	Control** LikedBy;
 	Comment** comments;
+	Activity* activity;
 
 	int totalLikedBy;
 	int totalComment;
 
 	static int TotalPosts;
 public:
+
 	~Post();
-	Post(const char* txt, Object* SharedBy, Date currentDate);
+	Post(const char* txt, Control* SharedBy, Date currentDate);
 	Post();
 	void ReadDataFromFile(ifstream& inp);
-	void SetSharedBy(Object* ptr);
-	void SetLikedBy(Object* ptr);
+	void SetSharedBy(Control* ptr);
+	void SetLikedBy(Control* ptr);
 	void AddComment(Comment* ptr);
 	bool CompareDate(Date currentDate, bool isMemory);
 	void ViewLikedList();
@@ -36,6 +41,6 @@ public:
 	void Print();
 	Date GetSharedDate();
 	char* GetId();
-};
 
-#endif;
+};
+#endif

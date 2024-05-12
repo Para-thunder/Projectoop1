@@ -2,23 +2,23 @@
 #ifndef COMMENT_H
 #define COMMENT_H
 
-#include"Helper.h"
-#include"Object.h"
+#include"Manager.h"
+#include"Control.h"
 #include<iostream>
 using namespace std;
 
 class Comment
 {
-	Object* CommentBy;
+	Control* CommentBy;
 	char* Text;
 	char* Id;
 
 	static int TotalComments;
 public:
-	Comment(Object* CurrentUser, char* txt);
+	Comment(Control* CurrentUser, char* txt);
 	Comment();
 	~Comment();
-	void SetValues(char* idStr, char* textStr, Object* commentByPtr);
+	void SetValues(char* idStr, char* textStr, Control* commentByPtr);
 	void Print();
 };
 

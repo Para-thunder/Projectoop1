@@ -1,13 +1,10 @@
 #pragma once
-
-#pragma once
 #ifndef DATE_H
 #define DATE_H
 
-#include"Date.cpp"
-#include<fstream>
+
 #include<iostream>
-using namespace std;
+#include <fstream>
 
 class Date
 {
@@ -19,13 +16,15 @@ public:
 
 	static Date CurrentDate;
 
-	Date(int x = 0, int y = 0, int z = 0);
-	void ReadDataFromFile(ifstream& inp);
-	bool compare(const Date& rhs, bool isMemory);
-	static int YearDiff(Date lhs, Date rhs);
-	void Print();
+	Date(int, int, int);
+	Date();
+	void ReadDataFromFile(std::ifstream& inp);
+	bool compare(const Date& rhs, bool isMemory) const;
+	static int YearDiff(const Date lhs, const Date rhs);
+	void Print()const;
 	void SetData(int d, int m, int y);
+
 };
 
-Date Date::CurrentDate = 0;
+
 #endif

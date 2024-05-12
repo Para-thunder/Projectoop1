@@ -1,40 +1,45 @@
 #include"Activity.h"
 
-
-
 Activity::Activity()
 {
 	type = 0;
-	value = "";
+	value = 0;
 }
-Activity::~Activity() {
-
+Activity::~Activity()
+{
+	delete[]value;
 }
 void Activity::Print()
 {
 	if (type == 1)
 	{
-		cout << " feeling " << endl;
+		cout << "feeling " << value;
+
 	}
+
 	else if (type == 2)
 	{
-		cout << " thinking about " << value;
+		cout << "thinking about " << value;
 	}
 	else if (type == 3)
 	{
-		cout << "Making" << value;
+		cout << "Making " << value;
 	}
-
 	else if (type == 4)
 	{
-		cout << " celebrating " << value;
+		cout << "celebrating " << value;
 	}
 }
+
 void Activity::ReadDataFromFile(ifstream& inp)
 {
-	getline(inp, value);
+	char temp[100];
+	inp >> type;
+	inp.getline(temp, '100');
+	Manager::GetString(temp, value);
 }
-void Activity::SetValue(string& text)
+
+void Activity::SetValue(char* text)
 {
-	value = text;
+	Manager::GetString(text, value);
 }

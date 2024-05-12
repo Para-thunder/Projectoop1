@@ -4,12 +4,12 @@
 
 
 #include"Post.h"
-#include"Object.h"
+#include"Control.h"
 #include<fstream>
 #include<iostream>
 using namespace std;
 
-class Pages : public Object
+class Pages : public Control
 
 {
 	char* Title;

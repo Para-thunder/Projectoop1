@@ -1,71 +1,45 @@
 #pragma once
-#ifndef USERS_H
-#define USERS_H
+#ifndef USER_H
+#define USER_H
 
-#include "Object.h"
-#include"Users.cpp"
-#include<iostream>
+#include"Control.h"
 #include<fstream>
-
-
+#include<iostream>
+#include"Page.h"
 using namespace std;
 
 
-class Users : public Object {
+class Users :public Control
+{
+	char* Fname;
+	char* Lname;
+	string name;
+	Pages** LikedPages;
+	Users** FriendList;
+	Post** timeline;
 
-    char* Fname;
-    char* Lname;
-    Pages** LikedPages;
-    Users** FriendList;
-    Post** timeline;
-
-
-    int totalTimeline;
-    int numPages;
-    int numFriends;
+	int totalTimeline;
+	int numPages;
+	int numFriends;
 
 public:
+	Users();
+	~Users();
+	void ReadDataFromFile(ifstream& inp);
+	void SetPage(Pages* ptr);
+	void CheckDate(Date CurrentDate, bool isMemory);
+	void LikePost(Post* post);
+	void HomePage(Date currentDate);
+	void ViewTimeline();
+	void SeeMemory(Date currentDate);
+	void PrintForHome();
+	void SetFriend(Users* ptr);
+	void AddPostToTimeline(Post* ptr);
+	void ViewFriendList();
+	void ViewLikedPages();
+	void Print();
+	char* GetId();
 
-    // Constructor
-    Users();
-    ~Users();
-   
-    void ReadDataFromFile(std::ifstream& inp); 
-    void SetPage(Page* ptr);
-   
-    void CheckDate(Date CurrentDate, bool isMemory);
-
-    void LikePost(Post* post);
-   
-    void HomePage(Date currentDate);
-  
-      
-    void ViewTimeline();
-   
-
-    void SeeMemory(Date currentDate);
-  
-    void PrintForHome();
-
-  
-
-    void SetFriend(Users* otr);
-   
-
-    void AddPostToTimeline(Post* ptr);
-   
-    void ViewFriendList();
-  
-
-    void ViewLikedPages();
-   
-
-    void Print();
-   
-
-    //getters
-    char* GetId();
-   
 };
 
 #endif

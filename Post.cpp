@@ -22,14 +22,14 @@ Post::Post()
 	totalComment = 0;
 	totalLikedBy = 0;
 }
-Post::Post(const char* txt, Object* SharedBy, Date currentDate)
+Post::Post(const char* txt, Control* SharedBy, Date currentDate)
 {
 
 	activity = 0;
-	char* IdForNewPost = Helper::Concate("post", TotalPosts + 1);
+	char* IdForNewPost = Manager::concate("post", TotalPosts + 1);
 
-	Helper::GetString(IdForNewPost, Id);
-	Helper::GetString(txt, text);
+	Manager::GetString(IdForNewPost, Id);
+	Manager::GetString(txt, text);
 	sharedBy = SharedBy;
 	sharedDate = currentDate;
 	totalComment = 0;
@@ -37,15 +37,15 @@ Post::Post(const char* txt, Object* SharedBy, Date currentDate)
 }
 
 
-void  Post::SetSharedBy(Object* ptr)
+void  Post::SetSharedBy(Control* ptr)
 {
 	sharedBy = ptr;
 }
-void Post::SetLikedBy(Object* ptr)
+void Post::SetLikedBy(Control* ptr)
 {
 	if (totalLikedBy == 0)
 	{
-		LikedBy = new Object * [10];
+		LikedBy = new Control * [10];
 		for (int i = 0; i < 10; i++)
 		{
 			LikedBy[i] = 0;
@@ -110,11 +110,11 @@ void Post::ReadDataFromFile(ifstream& inp)
 	inp >> activityId;
 	char temp[100];
 	inp >> temp;
-	Helper::GetString(temp, Id);
+	Manager::GetString(temp, Id);
 	sharedDate.ReadDataFromFile(inp);
 	inp.ignore();
 	inp.getline(temp, 100, '\n');
-	Helper::GetStringFromBuffer(temp, text);
+	Manager::GetString(temp, text);
 	if (activityId == 2)
 	{
 		activity = new Activity;

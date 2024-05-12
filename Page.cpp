@@ -20,11 +20,11 @@ void Pages::ReadDataFromFile(ifstream& inp)
 	char temp[50];
 	inp >> temp;
 	char* ptr;
-	Helper::GetStringFromBuffer(temp, ptr);
+	Manager::GetString(temp, ptr);
 	SetID(ptr);
 	inp.ignore();
 	inp.getline(temp, 50, '\n');
-	Helper::GetStringFromBuffer(temp, Title);
+	Manager::GetString(temp, Title);
 	//delete[]ptr;
 	//ptr= 0;
 }
@@ -90,5 +90,5 @@ char* Pages::GetId()///changed from GetId
 }
 char* Pages::GetID()
 {
-	return Object::GetID();
+	return Control::GetID();
 }
